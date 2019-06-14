@@ -3,34 +3,38 @@ import { Card, CardImg, CardBody, CardText, CardTitle } from 'reactstrap';
 
 class Dishdetail extends Component {
 
-    renderComments(comments) {
-        if (comments == null) {
-            return (<div></div>)
-        }
-        const cmnts = comments.map(comment => {
-            return (
-                <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p>-- {comment.author},
-                    &nbsp;
-                    {new Intl.DateTimeFormat('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: '2-digit'
-                        }).format(new Date(comment.date))}
-                    </p>
-                </li>
-            )
-        })
-        return (
-            <div className='col-12 col-md-5 m-1'>
-                <h4> Comments </h4>
-                <ul className='list-unstyled'>
-                    {cmnts}
-                </ul>
+    renderComments(dish) {
+        if(dish != null){
+            const cmnts = dish.comments.map((commentContent) =>{
+                return(
+                    <li className='list-item'>
+                        <p>{commentContent.comment}</p>
+                        <p>-- {commentContent.author},
+                        &nbsp;
+                        {new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: '2-digit'
+                            }).format(new Date(Date.parse(commentContent.date)))}
+                        </p>
+                    </li>
+                );
+            });
 
-            </div>
-        )
+            return(
+                <div className='col-12 col-md-5 m-1'>
+                    <h4>Comments</h4>
+                    <ul className='list-unstyled'>
+                        {cmnts}
+                    </ul>
+                </div>
+            );
+        }
+        else{
+            return(
+                <div></div>
+            );
+        }
     }
 
     renderDish(dish) {
@@ -57,12 +61,14 @@ class Dishdetail extends Component {
         if (dish === null) {
             return (<div></div>)
         }
-        const dishItem = this.renderDish(dish)
-        const commentItem = this.renderComments(dish.comments)
+        const dishItem = this.renderDish(dish);
+        const commentItem = this.renderComments(dish);
         return (
-            <div className='row'>
-                {dishItem}
-                {commentItem}
+            <div className="container">
+                <div className="row">
+                    {dishItem}
+                    {commentItem}
+                </div>
             </div>
         )
     }
